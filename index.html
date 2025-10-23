@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>STP Calculator</title>
+<style>
+  body { 
+    font-family: Arial, sans-serif; 
+    margin: 40px; 
+    background-color: #fff5f5;
+    color: #b00000;
+  }
+  h2 {
+    color: #d10000;
+  }
+  label { 
+    display: block; 
+    margin-top: 10px; 
+  }
+  input { 
+    padding: 8px; 
+    width: 200px; 
+    border: 2px solid #d10000;
+    border-radius: 5px;
+    font-size: 1em;
+    color: #b00000;
+  }
+  .result { 
+    margin-top: 20px; 
+    font-size: 1.4em; 
+    font-weight: bold; 
+    background-color: #ffd6d6;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+  }
+</style>
+</head>
+<body>
+
+<h2>คำนวณค่า STP</h2>
+
+<label>Absorbance (Abs):</label>
+<input type="number" step="0.0001" id="abs" value="0" oninput="calculate()">
+
+<label>Temperature (°C):</label>
+<input type="number" step="1" id="temp_c" value="31" oninput="calculate()">
+
+<div class="result" id="result">STP = -</div>
+
+<script>
+function calculate() {
+    const abs = parseFloat(document.getElementById('abs').value);
+    const tempC = parseFloat(document.getElementById('temp_c').value);
+
+    if (isNaN(abs) || isNaN(tempC)) {
+        document.getElementById('result').innerText = "STP = -";
+        return;
+    }
+
+    const F = (tempC * 9/5) + 32;  // C → F
+
+    const A = 5.846 - (0.1717 * F);
+    const B = -41.9192 + (0.7085 * F);
+    const C = B * abs;
+    const D = 35.2916 - (0.1521 * F);
+    const E = D * (abs * abs);
+
+    const stp = A + C + E;
+
+    document.getElementById('result').innerText = "STP = " + stp.toFixed(6);
+}
+</script>
+
+</body>
+</html>
