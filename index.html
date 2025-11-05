@@ -2,77 +2,113 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>STP Calculator</title>
 <style>
   body { 
-    font-family: Arial, sans-serif; 
+    font-family: 'Segoe UI', Arial, sans-serif; 
     margin: 40px; 
     background-color: #fff5f5;
     color: #b00000;
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
   h2 {
     color: #d10000;
+    text-align: center;
+    border-bottom: 2px solid #d10000;
+    padding-bottom: 10px;
+    margin-top: 0;
   }
   label { 
     display: block; 
-    margin-top: 10px; 
+    margin-top: 15px; 
+    font-weight: bold; 
   }
   input { 
-    padding: 8px; 
-    width: 200px; 
+    padding: 10px; 
+    width: 100%; 
+    box-sizing: border-box; 
     border: 2px solid #d10000;
     border-radius: 5px;
     font-size: 1em;
     color: #b00000;
+    margin-top: 5px; 
+  }
+  input:focus {
+    outline: none;
+    border-color: #ff0000;
   }
   .result { 
-    margin-top: 20px; 
-    font-size: 1.4em; 
+    margin-top: 30px; 
+    font-size: 1.6em; 
     font-weight: bold; 
     background-color: #ffd6d6;
-    padding: 10px;
+    padding: 15px;
     border-radius: 5px;
-    display: inline-block;
+    text-align: center;
+    border: 1px solid #d10000;
+  }
+  .back-link {
+    display: block;
+    margin-top: 25px;
+    font-size: 0.95em;
+    color: #b00000;
+    text-decoration: none;
+    text-align: center;
+  }
+  .back-link:hover {
+    text-decoration: underline;
   }
 </style>
 </head>
 <body>
 
-<h2>คำนวณค่า STP</h2>
+<div class="container">
+  <h2>STP Calculator</h2>
 
-<label>Absorbance (Abs):</label>
-<input type="number" step="0.001" id="abs" value="0" oninput="calculate()">
+  <label for="abs">Absorbance (Abs):</label>
+  <input type="number" step="0.0001" id="abs" value="0" oninput="calculate()">
 
-<label>Temperature (°C):</label>
-<input type="number" step="1" id="temp_c" value="26" oninput="calculate()">
+  <label for="temp_c">Temperature (°C):</label>
+  <input type="number" step="1" id="temp_c" value="26" oninput="calculate()">
 
-<div class="result" id="result">STP = -</div>
+  <div class="result" id="result">STP = -</div>
+
+  <div>
+    <a href="https://naninok.github.io/Main-Page/" class="back-link">← กลับไปหน้าแรก</a>
+  </div>
+</div>
 
 <script>
 function calculate() {
     const abs = parseFloat(document.getElementById('abs').value);
     const tempC = parseFloat(document.getElementById('temp_c').value);
 
+    // ถ้าไม่ได้กรอก หรือกรอกไม่ครบ ให้แสดง "-"
     if (isNaN(abs) || isNaN(tempC)) {
         document.getElementById('result').innerText = "STP = -";
         return;
     }
 
-    const F = (tempC * 9/5) + 32;  // C → F
-
+    const F = (tempC * 9/5) + 32;
     const A = 5.846 - (0.1717 * F);
     const B = -41.9192 + (0.7085 * F);
     const C = B * abs;
     const D = 35.2916 - (0.1521 * F);
     const E = D * (abs * abs);
-
     const stp = A + C + E;
 
-    document.getElementById('result').innerText = "STP = " + stp.toFixed(6);
+    document.getElementById('result').innerText = "STP = " + stp.toFixed(2);
 }
 </script>
 
 </body>
 </html>
-
-
